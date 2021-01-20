@@ -1,67 +1,71 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Chessman : MonoBehaviour
 {
-  //References
+    //References to objects in our Unity Scene
     public GameObject controller;
     public GameObject movePlate;
 
-  //Positions
-  private int xBoard = -1;
-  private int yBoard = -1;
+    //Position for this Chesspiece on the Board
+    //The correct position will be set later
+    private int xBoard = -1;
+    private int yBoard = -1;
 
-  //Variable to keep track of player 1 and player 2
-  private string player;
+    //Variable for keeping track of the player it belongs to "black" or "white"
+    private string player;
 
-  //References for all the sprites that the chess piece can be
-  public Sprite black_queen, black_knight, black_bishop, black_king, black_rook, black_pawn;
-public Sprite white_queen, white_knight, white_bishop, white_king, white_rook, white_pawn;
+    //References to all the possible Sprites that this Chesspiece could be
+    public Sprite black_queen, black_knight, black_bishop, black_king, black_rook, black_pawn;
+    public Sprite white_queen, white_knight, white_bishop, white_king, white_rook, white_pawn;
 
-public void Activate()
-{
-    controller = GameObject.FindGameObjectWithTag("GameController");
-
-//take the instantiated location and adjust the transform
-    SetCoords();
-
-    switch(this.name)
+    public void Activate()
     {
-        case "black_queen": this.GetComponent<SpriteRenderer>().sprite = black_queen; break;
-        case "black_knight": this.GetComponent<SpriteRenderer>().sprite = black_knight; break;
-        case "black_bishop": this.GetComponent<SpriteRenderer>().sprite = black_bishop; break;
-        case "black_king": this.GetComponent<SpriteRenderer>().sprite = black_king; break;
-        case "black_pawn": this.GetComponent<SpriteRenderer>().sprite = black_pawn; break;
-        case "black_rook": this.GetComponent<SpriteRenderer>().sprite = black_rook; break;
+        //Get the game controller
+        controller = GameObject.FindGameObjectWithTag("GameController");
 
-        case "white_queen": this.GetComponent<SpriteRenderer>().sprite = white_queen; break;
-        case "white_knight": this.GetComponent<SpriteRenderer>().sprite = white_knight; break;
-        case "white_bishop": this.GetComponent<SpriteRenderer>().sprite = white_bishop; break;
-        case "white_king": this.GetComponent<SpriteRenderer>().sprite = white_king; break;
-        case "white_rook": this.GetComponent<SpriteRenderer>().sprite = white_rook; break;
-        case "white_pawn": this.GetComponent<SpriteRenderer>().sprite = white_pawn; break;
+        //Take the instantiated location and adjust transform
+        SetCoords();
 
-
+        //Choose correct sprite based on piece's name
+        switch (this.name)
+        {
+            case "black_queen": this.GetComponent<SpriteRenderer>().sprite = black_queen; player = "black"; break;
+            case "black_knight": this.GetComponent<SpriteRenderer>().sprite = black_knight; player = "black"; break;
+            case "black_bishop": this.GetComponent<SpriteRenderer>().sprite = black_bishop; player = "black"; break;
+            case "black_king": this.GetComponent<SpriteRenderer>().sprite = black_king; player = "black"; break;
+            case "black_rook": this.GetComponent<SpriteRenderer>().sprite = black_rook; player = "black"; break;
+            case "black_pawn": this.GetComponent<SpriteRenderer>().sprite = black_pawn; player = "black"; break;
+            case "white_queen": this.GetComponent<SpriteRenderer>().sprite = white_queen; player = "white"; break;
+            case "white_knight": this.GetComponent<SpriteRenderer>().sprite = white_knight; player = "white"; break;
+            case "white_bishop": this.GetComponent<SpriteRenderer>().sprite = white_bishop; player = "white"; break;
+            case "white_king": this.GetComponent<SpriteRenderer>().sprite = white_king; player = "white"; break;
+            case "white_rook": this.GetComponent<SpriteRenderer>().sprite = white_rook; player = "white"; break;
+            case "white_pawn": this.GetComponent<SpriteRenderer>().sprite = white_pawn; player = "white"; break;
+        }
     }
-}
 
-public void SetCoords()
-{
-    float x = xBoard;
-    float y = yBoard;
+    public void SetCoords()
+    {
+        //Get the board value in order to convert to xy coords
+        float x = xBoard;
+        float y = yBoard;
 
-    x *= 0.66f;
-    y *= 0.66f;
+        //Adjust by variable offset
+        x *= 0.66f;
+        y *= 0.66f;
 
-    x += -2.3f;
-    y += -2.3f;
+        //Add constants (pos 0,0)
+        x += -2.3f;
+        y += -2.3f;
 
-    this.transform.position = new Vector3(x,y,-1);
+        //Set actual unity values
+        this.transform.position = new Vector3(x, y, -1.0f);
+    }
 
-}
-
- public int GetXBoard()
+    public int GetXBoard()
     {
         return xBoard;
     }
@@ -71,7 +75,7 @@ public void SetCoords()
         return yBoard;
     }
 
-      public void SetXBoard(int x)
+    public void SetXBoard(int x)
     {
         xBoard = x;
     }
@@ -81,16 +85,19 @@ public void SetCoords()
         yBoard = y;
     }
 
-      private void OnMouseUp()
+    private void OnMouseUp()
     {
+        if (!controller.GetComponent<Game>().IsGameOver() && controller.GetComponent<Game>().GetCurrentPlayer() == player)
+        {
             //Remove all moveplates relating to previously selected piece
             DestroyMovePlates();
 
             //Create new MovePlates
-           InitiateMovePlates();
+            InitiateMovePlates();
+        }
     }
 
-     public void DestroyMovePlates()
+    public void DestroyMovePlates()
     {
         //Destroy old MovePlates
         GameObject[] movePlates = GameObject.FindGameObjectsWithTag("MovePlate");
@@ -100,7 +107,7 @@ public void SetCoords()
         }
     }
 
-     public void InitiateMovePlates()
+    public void InitiateMovePlates()
     {
         switch (this.name)
         {
@@ -166,7 +173,7 @@ public void SetCoords()
         }
     }
 
-      public void LMovePlate()
+    public void LMovePlate()
     {
         PointMovePlate(xBoard + 1, yBoard + 2);
         PointMovePlate(xBoard - 1, yBoard + 2);
@@ -178,7 +185,7 @@ public void SetCoords()
         PointMovePlate(xBoard - 2, yBoard - 1);
     }
 
-     public void SurroundMovePlate()
+    public void SurroundMovePlate()
     {
         PointMovePlate(xBoard, yBoard + 1);
         PointMovePlate(xBoard, yBoard - 1);
@@ -190,7 +197,7 @@ public void SetCoords()
         PointMovePlate(xBoard + 1, yBoard + 1);
     }
 
-     public void PointMovePlate(int x, int y)
+    public void PointMovePlate(int x, int y)
     {
         Game sc = controller.GetComponent<Game>();
         if (sc.PositionOnBoard(x, y))
@@ -252,7 +259,7 @@ public void SetCoords()
         mpScript.SetCoords(matrixX, matrixY);
     }
 
-     public void MovePlateAttackSpawn(int matrixX, int matrixY)
+    public void MovePlateAttackSpawn(int matrixX, int matrixY)
     {
         //Get the board value in order to convert to xy coords
         float x = matrixX;
@@ -274,8 +281,4 @@ public void SetCoords()
         mpScript.SetReference(gameObject);
         mpScript.SetCoords(matrixX, matrixY);
     }
-
-
-
-  
 }
