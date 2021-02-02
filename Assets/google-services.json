@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1021744649019",
+    "firebase_url": "https://jeremyfenechchessgame-default-rtdb.firebaseio.com",
+    "project_id": "jeremyfenechchessgame",
+    "storage_bucket": "jeremyfenechchessgame.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021744649019:android:c7cbc4ee0eed78b382dd1e",
+        "android_client_info": {
+          "package_name": "com.mcast.jeremyFenechChess"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1021744649019-8j3napoiscflioioi3qjjm6mnr66kup3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGfiu3JWK6Uvj_N-xAAF-3-X-uv_UmvFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1021744649019-8j3napoiscflioioi3qjjm6mnr66kup3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

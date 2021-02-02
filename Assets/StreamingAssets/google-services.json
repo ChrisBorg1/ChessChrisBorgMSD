@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "747104374712",
+    "firebase_url": "https://chrisborgunity-ecd50-default-rtdb.firebaseio.com",
+    "project_id": "chrisborgunity-ecd50",
+    "storage_bucket": "chrisborgunity-ecd50.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747104374712:android:77e52b3153f5de1692094d",
+        "android_client_info": {
+          "package_name": "com.Chris.UnityChess"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747104374712-qr8lu7klh8m5nk3lp0ipoje41lq5rfli.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAT3IfbEr5W7lvoRIFXM7wrS0EAvBTnUc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747104374712-qr8lu7klh8m5nk3lp0ipoje41lq5rfli.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
