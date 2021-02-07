@@ -819,6 +819,18 @@ IEnumerator LoadTranOnstart()
         yield return new WaitForSeconds(0.2f);
     }
 
+    public void LoadPieces()
+    {
+        if(LoadGame.traditionalbtn == true)
+        {
+            StartCoroutine(LoadTranOnstart());
+        }
+        if(LoadGame.roboticbtn == true)
+        {
+            StartCoroutine(LoadTranOnstartRobotic());
+        }
+    }
+
     //list data from firebase
     void Start()
     {
@@ -828,7 +840,7 @@ IEnumerator LoadTranOnstart()
 
      StartCoroutine(downloadAndSaveImage());
   
-      StartCoroutine(LoadTranOnstartRobotic());
+      LoadPieces();
 
 
     }
