@@ -1,4 +1,4 @@
-﻿using Firebase;
+using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Storage;
@@ -41,8 +41,8 @@ public class FirebaseScript : MonoBehaviour
 
   //  string email = "gerrysaid.test5@gmail.com";
   //  string password = "IamNotSupposedToSeeThis1234!";
-  string email;
-  string password;
+  string email = "chrischess@hotmail.com";
+  string password = "chrischess";
 
   
     public bool signedin = false;
@@ -50,10 +50,8 @@ public class FirebaseScript : MonoBehaviour
     public InputField inputEmail;
     public InputField inputPassword;
 
-    public Button login;
-    public Button register;
 
-    
+    int RandomBackground;
 
     public IEnumerator addDataClass(string datatoinsert,gameManager g)
     {
@@ -92,63 +90,6 @@ public class FirebaseScript : MonoBehaviour
     }
 
 
-    public IEnumerator uploadScreenshot()
-    {
-        yield return initFirebase();
-
-        string actualfilename = "/sc_" + DateTime.Now.ToString("MM_dd_yyyyH_mm")+".png";
-
-        string filename = Application.persistentDataPath + actualfilename;
-
-        ScreenCapture.CaptureScreenshot(filename);
-
-        yield return new WaitForSeconds(2f);
-
-        Debug.Log(filename);
-
-        storage = FirebaseStorage.DefaultInstance;
-
-        Debug.Log(File.Exists(filename));
-
-        
-        StorageReference storage_ref = storage.GetReferenceFromUrl("https://chrisborgunity-ecd50-default-rtdb.firebaseio.com/");
-
-        StorageReference screenshots_folder = storage_ref.Child("screenshots"+ actualfilename);
-
-        //string local_file_uri = string.Format("{0}://{1}",Uri.UriSchemeFile, filename);
-
-        MetadataChange pngmetadata = new MetadataChange();
-
-        pngmetadata.ContentType = "image/png";
-
-        Task uploadScreenshotTask = screenshots_folder.PutFileAsync(filename,pngmetadata, 
-            new Firebase.Storage.StorageProgress<UploadState>(state => {
-            // called periodically during the upload - you can implement some sort of progress bar display here
-            Debug.Log(String.Format("Progress: {0} of {1} bytes transferred.",
-                               state.BytesTransferred, state.TotalByteCount));
-            }), CancellationToken.None, null);
-            
-            
-         uploadScreenshotTask.ContinueWith(resultTask => {
-             if (!resultTask.IsFaulted && !resultTask.IsCanceled)
-             {
-                 Debug.Log("Upload finished.");
-             }
-
-             if (resultTask.IsFaulted)
-             {
-                 //my internet exploded or firebase exploded or some other error happened here
-                 Debug.Log("Sorry, file  was not uploaded!" + resultTask.Exception);
-
-                 return;
-             }
-         });
-        
-
-        yield return new WaitUntil(() => uploadScreenshotTask.IsCompleted);
-        
-      
-    }
 
     private Sprite LoadSprite(string path)
     {
@@ -168,6 +109,8 @@ public class FirebaseScript : MonoBehaviour
 
     public IEnumerator downloadAndSaveImage()
     {
+        if(RandomBackground ==1)
+        {
 
         string pathToSaveIn = Application.persistentDataPath;
 
@@ -175,9 +118,9 @@ public class FirebaseScript : MonoBehaviour
 
         // Create local filesystem URL
         
-        string filename = Application.persistentDataPath + "/warship1.jpg";
+        string filename = Application.persistentDataPath + "/BlackBrick.jpg";  
 
-        StorageReference storage_ref = storage.GetReferenceFromUrl("gs://gerry-firebase1.appspot.com/warship1.jpg");
+        StorageReference storage_ref = storage.GetReferenceFromUrl("gs://chrisborgunity-ecd50.appspot.com/BlackBrick.jpg");
 
         // Start downloading a file
         Task task = storage_ref.GetFileAsync(filename,
@@ -202,10 +145,127 @@ public class FirebaseScript : MonoBehaviour
         yield return new WaitUntil(() => task.IsCompleted);
 
 
-        Sprite warship = LoadSprite(filename);
-        GameObject.Find("backgroundImage").GetComponent<Image>().sprite = warship;
+        Sprite bimg = LoadSprite(filename);
+        GameObject.Find("Background").GetComponent<Image>().sprite = bimg;
+        }//close if background==1
+       else if(RandomBackground ==2)
+        {
+
+        string pathToSaveIn = Application.persistentDataPath;
+
+        storage = FirebaseStorage.DefaultInstance;
+
+        // Create local filesystem URL
+        
+        string filename = Application.persistentDataPath + "/Sky.jpg";
+
+        StorageReference storage_ref = storage.GetReferenceFromUrl("gs://chrisborgunity-ecd50.appspot.com/Sky.jpg");
+
+        // Start downloading a file
+        Task task = storage_ref.GetFileAsync(filename,
+          new Firebase.Storage.StorageProgress<DownloadState>((DownloadState state) => {
+      // called periodically during the download
+      Debug.Log(String.Format(
+        "Progress: {0} of {1} bytes transferred.",
+        state.BytesTransferred,
+        state.TotalByteCount
+      ));
+          }), CancellationToken.None);
+
+        task.ContinueWith(resultTask => {
+            if (!resultTask.IsFaulted && !resultTask.IsCanceled)
+            {
+                Debug.Log("Download finished.");
+            }
+        });
+
+        Debug.Log(filename);
+
+        yield return new WaitUntil(() => task.IsCompleted);
 
 
+        Sprite bimg = LoadSprite(filename);
+        GameObject.Find("Background").GetComponent<Image>().sprite = bimg;
+        } //close if background ==2
+       else if(RandomBackground ==3)
+        {
+
+        string pathToSaveIn = Application.persistentDataPath;
+
+        storage = FirebaseStorage.DefaultInstance;
+
+        // Create local filesystem URL
+        
+        string filename = Application.persistentDataPath + "/brick.jpg";
+
+        StorageReference storage_ref = storage.GetReferenceFromUrl("gs://chrisborgunity-ecd50.appspot.com/brick.jpg");
+
+        // Start downloading a file
+        Task task = storage_ref.GetFileAsync(filename,
+          new Firebase.Storage.StorageProgress<DownloadState>((DownloadState state) => {
+      // called periodically during the download
+      Debug.Log(String.Format(
+        "Progress: {0} of {1} bytes transferred.",
+        state.BytesTransferred,
+        state.TotalByteCount
+      ));
+          }), CancellationToken.None);
+
+        task.ContinueWith(resultTask => {
+            if (!resultTask.IsFaulted && !resultTask.IsCanceled)
+            {
+                Debug.Log("Download finished.");
+            }
+        });
+
+        Debug.Log(filename);
+
+        yield return new WaitUntil(() => task.IsCompleted);
+
+
+        Sprite bimg = LoadSprite(filename);
+        GameObject.Find("Background").GetComponent<Image>().sprite = bimg;
+        }//close if background == 3
+
+      else if(RandomBackground ==4)
+        {
+
+        string pathToSaveIn = Application.persistentDataPath;
+
+        storage = FirebaseStorage.DefaultInstance;
+
+        // Create local filesystem URL
+        
+        string filename = Application.persistentDataPath + "/redOrange.jpg";
+
+        StorageReference storage_ref = storage.GetReferenceFromUrl("gs://chrisborgunity-ecd50.appspot.com/redOrange.jpg");
+
+        // Start downloading a file
+        Task task = storage_ref.GetFileAsync(filename,
+          new Firebase.Storage.StorageProgress<DownloadState>((DownloadState state) => {
+      // called periodically during the download
+      Debug.Log(String.Format(
+        "Progress: {0} of {1} bytes transferred.",
+        state.BytesTransferred,
+        state.TotalByteCount
+      ));
+          }), CancellationToken.None);
+
+        task.ContinueWith(resultTask => {
+            if (!resultTask.IsFaulted && !resultTask.IsCanceled)
+            {
+                Debug.Log("Download finished.");
+            }
+        });
+
+        Debug.Log(filename);
+
+        yield return new WaitUntil(() => task.IsCompleted);
+
+
+        Sprite bimg = LoadSprite(filename);
+        GameObject.Find("Background").GetComponent<Image>().sprite = bimg;
+        }//close if background==4
         yield return null;
     }
 
@@ -638,23 +698,13 @@ public class FirebaseScript : MonoBehaviour
     //list data from firebase
     void Start()
     {
+     StartCoroutine(initFirebase()); 
+
+     RandomBackground = UnityEngine.Random.Range(1,5);
+
+     StartCoroutine(downloadAndSaveImage());
+  
       
-      login.GetComponent<Button>().onClick.AddListener(delegate
-      {
-          email = inputEmail.text;
-          password = inputPassword.text;
-          StartCoroutine(signInToFirebase());
-          if(signedin == true)
-          {
-              SceneManager.LoadScene(1);
-          }
-      });
-      register.GetComponent<Button>().onClick.AddListener(() =>
-      {
-          email = inputEmail.text;
-          password = inputPassword.text;
-          StartCoroutine(createUser());
-      });
 
 
     }
