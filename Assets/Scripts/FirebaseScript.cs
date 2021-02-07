@@ -106,6 +106,8 @@ public class FirebaseScript : MonoBehaviour
         return null;
     }
 
+    
+
 
     public IEnumerator downloadAndSaveImage()
     {
@@ -269,7 +271,75 @@ public class FirebaseScript : MonoBehaviour
         yield return null;
     }
 
+public IEnumerator DownloadAndSaveTraditiona(string name)
+    {
+        string pathToSaveIn = Application.persistentDataPath;
+        string picese = "gs://chrisborgunity-ecd50.appspot.com/Traditional/" + name + ".png";
+        storage = FirebaseStorage.DefaultInstance;
+        string filename = Application.persistentDataPath + "/black_bishop.png";
+        StorageReference storage_ref = storage.GetReferenceFromUrl(picese);
+        Task task = storage_ref.GetFileAsync(filename,
+        new Firebase.Storage.StorageProgress<DownloadState>((DownloadState state) =>
+        {
+            Debug.Log(String.Format(
+              "Progress: {0} of {1} bytes transferred.",
+              state.BytesTransferred,
+              state.TotalByteCount
+            ));
+        }), CancellationToken.None);
+        task.ContinueWith(resultTask =>
+        {
+            if (!resultTask.IsFaulted && !resultTask.IsCanceled)
+            {
+                Debug.Log("Traditiona Download finished.");
+            }
+        });
 
+        Debug.Log(filename);
+        yield return new WaitUntil(() => task.IsCompleted);
+        Sprite pawns = LoadSprite(filename);
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag(name))
+        {
+            g.GetComponent<SpriteRenderer>().sprite = pawns;
+        }
+
+        yield return null;
+    }
+
+public IEnumerator DownloadAndSaveRobotic(string name)
+    {
+        string pathToSaveIn = Application.persistentDataPath;
+        string picese = "gs://chrisborgunity-ecd50.appspot.com/Robotic/" + name + ".png";
+        storage = FirebaseStorage.DefaultInstance;
+        string filename = Application.persistentDataPath + "/black_bishop.png";
+        StorageReference storage_ref = storage.GetReferenceFromUrl(picese);
+        Task task = storage_ref.GetFileAsync(filename,
+        new Firebase.Storage.StorageProgress<DownloadState>((DownloadState state) =>
+        {
+            Debug.Log(String.Format(
+              "Progress: {0} of {1} bytes transferred.",
+              state.BytesTransferred,
+              state.TotalByteCount
+            ));
+        }), CancellationToken.None);
+        task.ContinueWith(resultTask =>
+        {
+            if (!resultTask.IsFaulted && !resultTask.IsCanceled)
+            {
+                Debug.Log("Traditiona Download finished.");
+            }
+        });
+
+        Debug.Log(filename);
+        yield return new WaitUntil(() => task.IsCompleted);
+        Sprite pawns = LoadSprite(filename);
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag(name))
+        {
+            g.GetComponent<SpriteRenderer>().sprite = pawns;
+        }
+
+        yield return null;
+    }
    public IEnumerator clearFirebase()
     {
         Task removeAllRecords = reference.RemoveValueAsync().ContinueWithOnMainThread(
@@ -693,7 +763,61 @@ public class FirebaseScript : MonoBehaviour
     }
 
 
+IEnumerator LoadTranOnstart()
+    {
+        StartCoroutine(DownloadAndSaveTraditiona("black_bishop"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("black_king"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("black_knight"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("black_pawn"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("black_queen"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("black_rook"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("white_bishop"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("white_king"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("white_knight"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("white_pawn"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("white_queen"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveTraditiona("white_rook"));
+        yield return new WaitForSeconds(0.2f);
+    }
 
+    IEnumerator LoadTranOnstartRobotic()
+    {
+        StartCoroutine(DownloadAndSaveRobotic("black_bishop"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("black_king"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("black_knight"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("black_pawn"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("black_queen"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("black_rook"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("white_bishop"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("white_king"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("white_knight"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("white_pawn"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("white_queen"));
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(DownloadAndSaveRobotic("white_rook"));
+        yield return new WaitForSeconds(0.2f);
+    }
 
     //list data from firebase
     void Start()
@@ -704,7 +828,7 @@ public class FirebaseScript : MonoBehaviour
 
      StartCoroutine(downloadAndSaveImage());
   
-      
+      StartCoroutine(LoadTranOnstartRobotic());
 
 
     }
